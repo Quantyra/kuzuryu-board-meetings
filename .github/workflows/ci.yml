@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install
+        run: pip install -e ".[dev]"
+      - name: Lint
+        run: ruff check .
+      - name: Tests
+        run: pytest
+      - name: Radon cyclomatic complexity
+        run: radon cc src tests -s -a
+      - name: Radon maintainability index
+        run: radon mi src tests -s
+      - name: Security sweep
+        run: python scripts/security_sweep.py
+
