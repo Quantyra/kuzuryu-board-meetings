@@ -12,6 +12,7 @@ The project follows semantic versioning for public releases.
   stricter workflow permissions.
 - Added Docker OCI labels, `.dockerignore`, SBOM/provenance publishing, and
   Node 24 opt-in for Docker GitHub Actions.
+- Updated the published container base image to Python 3.14 slim.
 - Added operations and architecture documentation.
 - Increased test coverage to 81% and enforced an 80% coverage floor.
 - Expanded publisher and Slack helper tests.
