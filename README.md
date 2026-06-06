@@ -86,6 +86,15 @@ The service is a normal ASGI app and can run behind any HTTPS reverse proxy.
 
 ### Docker
 
+Pull the published container:
+
+```bash
+docker pull ghcr.io/quantyra/kuzuryu-board-meetings:latest
+docker run --env-file .env -p 8000:8000 ghcr.io/quantyra/kuzuryu-board-meetings:latest
+```
+
+Or build locally:
+
 ```bash
 docker build -t kuzuryu-board-meetings .
 docker run --env-file .env -p 8000:8000 kuzuryu-board-meetings
@@ -135,4 +144,3 @@ python scripts/security_sweep.py
 ```
 
 The GitHub Actions workflow runs these same checks on pull requests and pushes.
-
