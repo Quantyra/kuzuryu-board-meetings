@@ -4,6 +4,15 @@ All notable changes to Kuzuryu Board Meetings will be documented in this file.
 
 The project follows semantic versioning for public releases.
 
+## v0.1.2 - 2026-06-06
+
+- Added `.gitattributes` to normalize repository line endings.
+- Added Python 3.14 classifier to match the validated local runtime and
+  published container base image.
+- Verified repository governance settings, branch protection, secret scanning,
+  push protection, private vulnerability reporting, and Dependabot security
+  updates.
+
 ## v0.1.1 - 2026-06-06
 
 - Added best-practice open source governance files, issue templates, pull
