@@ -172,6 +172,8 @@ The GitHub Actions workflow runs these same checks on pull requests and pushes.
 - `docs/operations.md`: production setup, Slack configuration, and runtime
   guidance.
 - `docs/architecture.md`: service architecture and module map.
+- `docs/release.md`: release, container publishing, and public pull
+  verification process.
 - `CONTRIBUTING.md`: contribution workflow.
 - `SECURITY.md`: vulnerability reporting and production security guidance.
 - `ROADMAP.md`: planned improvements and non-goals.
