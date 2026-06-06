@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.14-slim
 
 LABEL org.opencontainers.image.title="Kuzuryu Board Meetings"
 LABEL org.opencontainers.image.description="Slack board meeting quorum, voting, and minutes service."
