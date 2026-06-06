@@ -20,6 +20,7 @@ permissions:
 
 env:
   IMAGE_NAME: ghcr.io/quantyra/kuzuryu-board-meetings
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
   publish:
@@ -45,5 +46,7 @@ jobs:
         with:
           context: .
           push: true
+          provenance: true
+          sbom: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

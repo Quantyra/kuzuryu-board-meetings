@@ -10,11 +10,27 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "AGPL-3.0-or-later" }
 authors = [{ name = "Quantyra" }]
+keywords = ["slack", "board", "minutes", "voting", "governance"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Framework :: FastAPI",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Office/Business",
+]
 dependencies = [
   "fastapi>=0.115",
   "pydantic>=2.8",
   "uvicorn[standard]>=0.30",
 ]
+
+[project.urls]
+Homepage = "https://github.com/Quantyra/kuzuryu-board-meetings"
+Repository = "https://github.com/Quantyra/kuzuryu-board-meetings"
+Issues = "https://github.com/Quantyra/kuzuryu-board-meetings/issues"
+Changelog = "https://github.com/Quantyra/kuzuryu-board-meetings/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 dev = [
@@ -40,5 +56,4 @@ select = ["E", "F", "I", "N", "UP", "B", "A", "C4", "SIM", "RUF"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-q --cov=kuzuryu_board_meetings --cov-report=term-missing"
-
+addopts = "-q --basetemp=.pytest-tmp --cov=kuzuryu_board_meetings --cov-report=term-missing --cov-fail-under=80"

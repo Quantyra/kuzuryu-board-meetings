@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security issue
+    url: https://github.com/Quantyra/kuzuryu-board-meetings/security/advisories/new
+    about: Report suspected vulnerabilities privately.
+  - name: Support guidance
+    url: https://github.com/Quantyra/kuzuryu-board-meetings/blob/main/SUPPORT.md
+    about: Read support expectations before opening an issue.

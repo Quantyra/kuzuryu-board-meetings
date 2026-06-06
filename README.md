@@ -1,5 +1,9 @@
 # Kuzuryu Board Meetings
 
+[![CI](https://github.com/Quantyra/kuzuryu-board-meetings/actions/workflows/ci.yml/badge.svg)](https://github.com/Quantyra/kuzuryu-board-meetings/actions/workflows/ci.yml)
+[![Security](https://github.com/Quantyra/kuzuryu-board-meetings/actions/workflows/security.yml/badge.svg)](https://github.com/Quantyra/kuzuryu-board-meetings/actions/workflows/security.yml)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPLv3-blue.svg)](LICENSE)
+
 Kuzuryu Board Meetings is an AGPL Slack application for board meeting quorum,
 motions, votes, recusals, conversation capture, and markdown minutes publishing.
 
@@ -10,6 +14,22 @@ It provides two Slack slash commands:
 
 Minutes can be returned directly to Slack and optionally committed into a git
 repository for durable records.
+
+## Quick Start
+
+```bash
+cp .env.example .env
+docker pull ghcr.io/quantyra/kuzuryu-board-meetings:latest
+docker run --env-file .env -p 8000:8000 ghcr.io/quantyra/kuzuryu-board-meetings:latest
+```
+
+Then open:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+For production setup, see `docs/operations.md`.
 
 ## Security Model
 
@@ -26,6 +46,8 @@ Recommended Slack bot scopes:
 
 Use `SLACK_SIGNING_SECRET` in production so Slack request signatures are
 verified.
+
+Report vulnerabilities through the process in `SECURITY.md`.
 
 ## Local Setup
 
@@ -144,3 +166,13 @@ python scripts/security_sweep.py
 ```
 
 The GitHub Actions workflow runs these same checks on pull requests and pushes.
+
+## Project Resources
+
+- `docs/operations.md`: production setup, Slack configuration, and runtime
+  guidance.
+- `docs/architecture.md`: service architecture and module map.
+- `CONTRIBUTING.md`: contribution workflow.
+- `SECURITY.md`: vulnerability reporting and production security guidance.
+- `ROADMAP.md`: planned improvements and non-goals.
+- `CHANGELOG.md`: release history.
