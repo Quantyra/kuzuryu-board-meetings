@@ -5,5 +5,9 @@ services:
       - ../.env
     ports:
       - "8000:8000"
+    volumes:
+      - board-meetings-data:/data
     restart: unless-stopped
 
+volumes:
+  board-meetings-data:

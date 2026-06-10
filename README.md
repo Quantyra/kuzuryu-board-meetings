@@ -20,7 +20,10 @@ repository for durable records.
 ```bash
 cp .env.example .env
 docker pull ghcr.io/quantyra/kuzuryu-board-meetings:latest
-docker run --env-file .env -p 8000:8000 ghcr.io/quantyra/kuzuryu-board-meetings:latest
+docker volume create board-meetings-data
+docker run --env-file .env -p 8000:8000 \
+  -v board-meetings-data:/data \
+  ghcr.io/quantyra/kuzuryu-board-meetings:latest
 ```
 
 Then open:
@@ -148,6 +151,13 @@ Set these environment variables to publish minutes into a git repository:
 - `MINUTES_GIT_DIR`
 - `MINUTES_GIT_AUTHOR_NAME`
 - `MINUTES_GIT_AUTHOR_EMAIL`
+
+## Runtime State
+
+Set `BOARD_STATE_PATH` to a JSON file on persistent storage. The published
+container defaults to `/data/board-state.json`; mount `/data` as a Docker volume
+so active meetings, quorum records, motions, votes, and captured messages
+survive container restarts.
 - `MINUTES_GIT_SSH_KEY`
 
 For private repositories, mount a read/write deploy key and set

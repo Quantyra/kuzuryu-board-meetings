@@ -22,7 +22,7 @@ from .store import BoardStore
 
 def create_app(settings: Settings | None = None) -> FastAPI:
     app_settings = settings or load_settings()
-    store = BoardStore()
+    store = BoardStore(app_settings.board_state_path)
     slack = SlackClient(app_settings.slack_bot_token)
     app = FastAPI(title="Kuzuryu Board Meetings", version="0.1.0")
 

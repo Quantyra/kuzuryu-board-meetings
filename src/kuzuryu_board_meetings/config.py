@@ -23,8 +23,10 @@ class Settings:
         "MINUTES_GIT_AUTHOR_EMAIL", "board-meetings@example.invalid"
     )
     minutes_git_ssh_key: str | None = os.getenv("MINUTES_GIT_SSH_KEY")
+    board_state_path: Path | None = (
+        Path(path) if (path := os.getenv("BOARD_STATE_PATH")) else None
+    )
 
 
 def load_settings() -> Settings:
     return Settings()
-

@@ -4,6 +4,13 @@ All notable changes to Kuzuryu Board Meetings will be documented in this file.
 
 The project follows semantic versioning for public releases.
 
+## Unreleased
+
+- Added optional JSON state persistence for active board meetings, quorum
+  records, motions, votes, and captured messages.
+- Updated Docker deployment defaults and docs to persist runtime state under
+  `/data/board-state.json`.
+
 ## v0.1.2 - 2026-06-06
 
 - Added `.gitattributes` to normalize repository line endings.

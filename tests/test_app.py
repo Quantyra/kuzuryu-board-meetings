@@ -58,6 +58,29 @@ def test_slack_command_flow() -> None:
     assert "Board meeting started" in start.json()["text"]
 
 
+def test_active_meeting_survives_app_restart(tmp_path) -> None:
+    settings = Settings(board_auth_token="token", board_state_path=tmp_path / "board-state.json")
+    headers = {"X-Board-Token": "token"}
+    client = TestClient(create_app(settings))
+    start = client.post(
+        "/board/meetings",
+        json={"title": "Restart Test", "workspace_id": "T1", "channel_id": "C1"},
+        headers=headers,
+    )
+    assert start.status_code == 200
+
+    restarted = TestClient(create_app(settings))
+    closed = restarted.post(
+        "/board/meetings/active/close",
+        json={"workspace_id": "T1", "channel_id": "C1"},
+        headers=headers,
+    )
+
+    assert closed.status_code == 200
+    assert closed.json()["meeting"]["id"] == start.json()["id"]
+    assert closed.json()["meeting"]["status"] == "closed"
+
+
 def test_slack_event_url_verification() -> None:
     client = TestClient(create_app())
     response = client.post("/events", json={"type": "url_verification", "challenge": "abc"})

@@ -5,6 +5,8 @@
 Set these values for any production deployment:
 
 - `BOARD_AUTH_TOKEN`: shared token for direct API routes.
+- `BOARD_STATE_PATH`: JSON state file used to preserve active meetings,
+  motions, votes, quorum records, and captured messages across process restarts.
 - `SLACK_SIGNING_SECRET`: Slack request signing secret.
 - `SLACK_BOT_TOKEN`: Slack bot token used for user lookup and history capture.
 
@@ -57,10 +59,17 @@ Expected response:
 
 ```bash
 docker pull ghcr.io/quantyra/kuzuryu-board-meetings:latest
-docker run --env-file .env -p 8000:8000 ghcr.io/quantyra/kuzuryu-board-meetings:latest
+docker volume create board-meetings-data
+docker run --env-file .env -p 8000:8000 \
+  -v board-meetings-data:/data \
+  ghcr.io/quantyra/kuzuryu-board-meetings:latest
 ```
 
 Put the service behind HTTPS before connecting Slack.
+
+Keep `BOARD_STATE_PATH` on a persistent volume in production. Open meetings are
+stored there so slash commands can still find the active meeting after a
+container restart or redeploy.
 
 ## Minutes Publishing
 

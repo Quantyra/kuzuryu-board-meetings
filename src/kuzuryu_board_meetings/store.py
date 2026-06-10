@@ -1,8 +1,10 @@
-"""In-memory board meeting store."""
+"""Board meeting store."""
 
 from __future__ import annotations
 
+import json
 from datetime import UTC, datetime
+from pathlib import Path
 from uuid import uuid4
 
 from .models import AttendanceRecord, CapturedMessage, MeetingRecord, MotionRecord, VoteRecord
@@ -11,10 +13,12 @@ RECUSE_OPTIONS = {"recuse": "Recused", "recused": "Recused"}
 
 
 class BoardStore:
-    def __init__(self) -> None:
+    def __init__(self, state_path: Path | None = None) -> None:
+        self.state_path = state_path
         self.meetings: dict[str, MeetingRecord] = {}
         self.active_by_channel: dict[tuple[str, str], str] = {}
         self.motions: dict[str, MotionRecord] = {}
+        self._load()
 
     def start_meeting(
         self,
@@ -38,6 +42,7 @@ class BoardStore:
         )
         self.meetings[meeting.id] = meeting
         self.active_by_channel[key] = meeting.id
+        self._save()
         return meeting
 
     def active_meeting(self, workspace_id: str, channel_id: str) -> MeetingRecord:
@@ -69,6 +74,7 @@ class BoardStore:
                 event_type=event_type,
             )
         )
+        self._save()
         return meeting
 
     def update_quorum(
@@ -87,6 +93,7 @@ class BoardStore:
             for item in attendees
         ]
         meeting.attendance = quorum_after_action(meeting.attendance, incoming, action)
+        self._save()
         return meeting
 
     def create_motion(
@@ -115,6 +122,7 @@ class BoardStore:
             raise ValueError("motion text required")
         meeting.motions.append(motion)
         self.motions[motion.id] = motion
+        self._save()
         return motion
 
     def cast_vote(
@@ -135,12 +143,14 @@ class BoardStore:
                 cast_at=datetime.now(UTC),
             )
         )
+        self._save()
         return motion
 
     def close_motion(self, motion_id: str) -> MotionRecord:
         motion = self.motions[motion_id]
         motion.status = "closed"
         motion.closed_at = datetime.now(UTC)
+        self._save()
         return motion
 
     def close_active_meeting(self, workspace_id: str, channel_id: str) -> MeetingRecord:
@@ -148,6 +158,7 @@ class BoardStore:
         meeting.status = "closed"
         meeting.closed_at = datetime.now(UTC)
         self.active_by_channel.pop((workspace_id, channel_id), None)
+        self._save()
         return meeting
 
     def _open_motion(self, motion_id: str) -> MotionRecord:
@@ -155,6 +166,41 @@ class BoardStore:
         if motion.status != "open":
             raise ValueError("motion is closed")
         return motion
+
+    def _load(self) -> None:
+        if not self.state_path or not self.state_path.exists():
+            return
+        payload = json.loads(self.state_path.read_text(encoding="utf-8"))
+        self.meetings = {
+            meeting_id: MeetingRecord.model_validate(meeting)
+            for meeting_id, meeting in payload.get("meetings", {}).items()
+        }
+        self.active_by_channel = {
+            tuple(key.split("|", 1)): meeting_id
+            for key, meeting_id in payload.get("active_by_channel", {}).items()
+            if "|" in key
+        }
+        self.motions = {
+            motion.id: motion
+            for meeting in self.meetings.values()
+            for motion in meeting.motions
+        }
+
+    def _save(self) -> None:
+        if not self.state_path:
+            return
+        self.state_path.parent.mkdir(parents=True, exist_ok=True)
+        payload = {
+            "meetings": {
+                meeting_id: meeting.model_dump(mode="json")
+                for meeting_id, meeting in self.meetings.items()
+            },
+            "active_by_channel": {
+                f"{workspace_id}|{channel_id}": meeting_id
+                for (workspace_id, channel_id), meeting_id in self.active_by_channel.items()
+            },
+        }
+        self.state_path.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
 
 
 def attendance_key(attendee: AttendanceRecord) -> str:
