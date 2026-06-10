@@ -4,7 +4,7 @@ All notable changes to Kuzuryu Board Meetings will be documented in this file.
 
 The project follows semantic versioning for public releases.
 
-## Unreleased
+## v0.1.3 - 2026-06-10
 
 - Added optional JSON state persistence for active board meetings, quorum
   records, motions, votes, and captured messages.
