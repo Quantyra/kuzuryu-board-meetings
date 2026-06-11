@@ -38,6 +38,10 @@ Slack or committed into a separate git repository.
 
 ## Persistence
 
-The initial release uses in-process state. This keeps deployment simple, but it
-means active meetings are not durable across process restarts unless minutes
-have already been published. Persistent storage is a roadmap item.
+The service keeps active records in memory and can mirror them to a JSON state
+file when `BOARD_STATE_PATH` is configured. That file preserves active board
+meetings, quorum records, motions, votes, and captured messages across process
+restarts.
+
+Container deployments should place `BOARD_STATE_PATH` on a persistent volume.
+The published container defaults to `/data/board-state.json`.

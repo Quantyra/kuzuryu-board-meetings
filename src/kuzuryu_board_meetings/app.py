@@ -313,7 +313,13 @@ def slack_error(text: str) -> dict[str, str]:
 
 
 def close_message(meeting_id: str, markdown: str) -> str:
-    return f"Board meeting closed: `{meeting_id}`. Draft minutes:\n```{markdown[:2500]}```"
+    if len(markdown) <= 2500:
+        return f"Board meeting closed: `{meeting_id}`. Draft minutes:\n```{markdown}```"
+    return (
+        f"Board meeting closed: `{meeting_id}`. "
+        "Draft minutes preview, not the full record:\n"
+        f"```{markdown[:2500]}```"
+    )
 
 
 def quorum_action(args: list[str]) -> str:

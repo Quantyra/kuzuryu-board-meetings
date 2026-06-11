@@ -13,7 +13,7 @@ This roadmap describes likely directions, not guaranteed delivery dates.
 ## Medium Term
 
 - Add a web status page for active meetings.
-- Add optional persistent storage beyond the in-process store.
+- Add migration tooling for future storage backends beyond JSON state files.
 - Add richer audit export formats.
 - Add typed API examples for automation clients.
 
